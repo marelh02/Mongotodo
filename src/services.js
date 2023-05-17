@@ -73,7 +73,7 @@ return 1
 }
 
 export async function isLogged(){
-  return false
+  return true
 }
 // we can use cookies, however it should return the whole user object
 export async function getCurrentUser(){
@@ -107,5 +107,5 @@ export async function getAllTasksByKeyWord(kw) {
 
 export async function getStats(){
   //must return an obj of the following type
-  return {total:6,todo:1,doing:2,done:3}
+  return {total:12,todo:1,doing:2,done:3}
 }

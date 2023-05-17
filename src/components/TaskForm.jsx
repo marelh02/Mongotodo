@@ -57,7 +57,7 @@ export default function TaskForm({task,f}) {
                 control={Input}
                 type='date'
                 label='Deadline'
-                defaultValue={currentTask.dateLimite.toISOString().slice(0,10)}
+                defaultValue={currentTask.dateLimite?currentTask.dateLimite.toISOString().slice(0,10):""}
                 name="dateLimite"
                 onChange={handleChange}
             />

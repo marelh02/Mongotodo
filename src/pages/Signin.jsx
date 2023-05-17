@@ -9,7 +9,7 @@ export function Signin() {
   const [user,setUser]=useState({})
   const handleChange = (e, { name, value }) => setUser({ ...user,[name]: value })
   const handleSubmit=async()=>{
-    console.log(user);
+    
   }
   return (
     <>
