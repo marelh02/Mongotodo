@@ -1,15 +1,18 @@
 import { Image, Form, Segment, Grid, Header,Container } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from '../assets/logo.png'
 import "./Signin.css"
 import { useState } from "react";
+import { createAccount } from "../services";
 
 export function Signup() {
+    const navigate=useNavigate()
     const [user,setUser]=useState({})
 
     const handleChange = (e, { name, value }) => setUser({ ...user, [name]: value })
     const handleSubmit=async()=>{
-        console.log(user);
+        await createAccount(user)
+        useNavigate("/")
       }
     return (
         <>

@@ -2,14 +2,17 @@ import { Image, Form, Segment, Grid, Label, Container } from "semantic-ui-react"
 import logo from "../assets/logo.png"
 import "./Signin.css"
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services";
 
 
 export function Signin() {
   const [user,setUser]=useState({})
+  const navigate=useNavigate()
   const handleChange = (e, { name, value }) => setUser({ ...user,[name]: value })
   const handleSubmit=async()=>{
-    
+    await login(user)
+    navigate("/")
   }
   return (
     <>
