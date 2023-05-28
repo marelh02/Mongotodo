@@ -12,7 +12,7 @@ export function Signup() {
     const handleChange = (e, { name, value }) => setUser({ ...user, [name]: value })
     const handleSubmit=async()=>{
         await createAccount(user)
-        useNavigate("/")
+        window.location.href = '/';
       }
     return (
         <>
@@ -27,7 +27,7 @@ export function Signup() {
                                 <Form.Input fluid label='User name'
                                     placeholder='Enter user name'
                                     required
-                                    name="userName"
+                                    name="nomComplet"
                                     onChange={handleChange} />
 
                                 <Form.Input fluid label='Email'
@@ -42,7 +42,7 @@ export function Signup() {
                                     label='Password'
                                     placeholder='Enter Password'
                                     required
-                                    name="password"
+                                    name="motDePasse"
                                     onChange={handleChange} />
 
                                 <Form.Input fluid
@@ -50,7 +50,7 @@ export function Signup() {
                                     label='Confirm password'
                                     placeholder='Confirm password'
                                     required
-                                    name="confirmPassword"
+                                    name="motDePasse2"
                                     onChange={handleChange} />
                                 </Form.Group>
                                 <Container textAlign="right" as={Link} to="/signin">Already got an account? sign in</Container>

@@ -1,3 +1,8 @@
 #boody{
     min-height: 80vh;
 }
+
+.centerer{
+    display: flex;
+    justify-content: center;
+}

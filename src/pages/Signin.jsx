@@ -12,7 +12,7 @@ export function Signin() {
   const handleChange = (e, { name, value }) => setUser({ ...user,[name]: value })
   const handleSubmit=async()=>{
     await login(user)
-    navigate("/")
+    window.location.href = '/';
   }
   return (
     <>

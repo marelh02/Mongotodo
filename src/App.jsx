@@ -12,14 +12,14 @@ import {
 } from "react-router-dom";
 import Page from './pages/Page'
 import { isLogged } from './services'
+import { useEffect, useState } from 'react'
 
-let l= await isLogged()
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: l===true?<Page/>:<Navigate to={"signin"}/>,
+      element: isLogged()===true?<Page/>:<Navigate to={"signin"}/>,
       children:[{    
         index:true,    
         element: <Home/>,
@@ -34,22 +34,18 @@ function App() {
     },
     {
       path: "/signin",
-      element: l===true?<Navigate to={"/"}/>:<Signin/>,
+      element: isLogged()===true?<Navigate to={"/"}/>:<Signin/>,
       index:true,
     },
     {
       path: "/signup",
-      element: l===true?<Navigate to={"/"}/>:<Signup/>,
+      element: isLogged()===true?<Navigate to={"/"}/>:<Signup/>,
     },
   ])
-  
+
 
   return (
     <>
-      {/* <Home/> */}
-      {/* <Signin/> */}
-      {/* <Signup/> */}
-      
       <RouterProvider router={router} />
     </>
   )

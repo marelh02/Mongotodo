@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, TextArea, List, Form, Header, Icon, Input, Label, Modal, Tab, Table, Checkbox, LabelGroup } from 'semantic-ui-react'
-import { createTask, modifyTask } from '../services';
+import { createTask, getCurrentUser, modifyTask } from '../services';
 
 
 const options = [
@@ -9,13 +9,14 @@ const options = [
     { key: 'done', text: 'Done', value: 'done' },
 ]
 
-export default function TaskForm({task,f}) {
+export default function TaskForm({task}) {
     
     const [currentTask,setCurrentTask]=useState(task?task:{
+        uid:getCurrentUser()._id,
         _id:null,
         titre:null,
         dateModification:null,
-        statue: null,
+        statue: "todo",
         dateLimite:null,
         commentaire:null,
         sousTaches: null,
@@ -26,11 +27,16 @@ export default function TaskForm({task,f}) {
 
     const handleChange = (e, { name, value }) => setCurrentTask({ ...currentTask, [name]: value })
     const handleSubmit= async ()=>{
+        console.log("here is what will be saved: ");
+        console.log({...currentTask,sousTaches:subtasks,
+            dateModification: new Date()});
+
         task==null?
         await createTask({...currentTask,sousTaches:subtasks,
             dateModification: new Date()}):
             await modifyTask({...currentTask,sousTaches:subtasks,
                 dateModification: new Date()})
+
         console.log({...currentTask,sousTaches:subtasks,
             dateModification: new Date()});
     }
@@ -57,7 +63,7 @@ export default function TaskForm({task,f}) {
                 control={Input}
                 type='date'
                 label='Deadline'
-                defaultValue={currentTask.dateLimite?currentTask.dateLimite.toISOString().slice(0,10):""}
+                defaultValue={currentTask.dateLimite?currentTask.dateLimite:""}
                 name="dateLimite"
                 onChange={handleChange}
             />
@@ -67,7 +73,7 @@ export default function TaskForm({task,f}) {
                 placeholder="Add a subtask"
                 id='subtaskinput'>
                 <input />
-                <Button
+                <Button type='button'
                     onClick={() => {
                         setSubtasks([...subtasks, document.getElementById("subtaskinput").value])
                     }}>Add</Button>
@@ -78,7 +84,7 @@ export default function TaskForm({task,f}) {
                     return(
                         <List.Item key={i}>
                         <Checkbox label={x} />
-                        <Button floated='right' icon="delete" size='mini' onClick={() => {
+                        <Button type='button' floated='right' icon="delete" size='mini' onClick={() => {
                             let l = subtasks.filter((_, index) => index !== i)
                             setSubtasks(l) }} />
                     </List.Item>

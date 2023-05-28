@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Button, Item, Header, Icon, Input, Label, Modal, Tab, Table, Grid, Search } from 'semantic-ui-react'
 import TaskForm from '../components/TaskForm'
 import moment from 'moment/moment'
-import { deleteTask, getAllTasks, getAllTasksByKeyWord } from '../services'
-import { useNavigate } from "react-router-dom";
-import { isLogged } from "../services";
+import { deleteTask, getAllTasks, getAllTasksByKeyWord, getCurrentUser } from '../services'
+
 
 
 
@@ -36,7 +35,7 @@ export default function TasksPage() {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {list.map(x => <Table.Row>
+              {list.map(x => <Table.Row key={x._id}>
                 <Table.Cell textAlign='center'>{x.titre}</Table.Cell>
                 <Table.Cell textAlign='center'>{moment(x.dateModification).fromNow()}</Table.Cell>
                 <Table.Cell textAlign='center'>
@@ -81,6 +80,7 @@ export default function TasksPage() {
       <Item as={Button} onClick={() => {
         setCurrentTask({
           "_id": _id,
+          "uid":getCurrentUser()._id,
           "titre": titre,
           "dateModification": dateModification,
           "statue": statue,
@@ -129,6 +129,7 @@ export default function TasksPage() {
           document.getElementById('formButton').click()
           setCurrentTask(null)
           setOpen(false)
+          window.location.reload()
         }}>
           Save
         </Button>
@@ -153,11 +154,16 @@ export default function TasksPage() {
     <br /><br />
 
 
-    <Button floated='right' onClick={() => { setOpen(true) }}>
+    <Button floated='right' onClick={() => { 
+      setCurrentTask(null)
+      setOpen(true) }}>
       <Icon name='plus' />
       Add new task
     </Button>
     <br /><br />
+
+
+
     <Tab menu={{ fluid: true, vertical: true, tabular: true }} panes={panes} />
   </>)
 }

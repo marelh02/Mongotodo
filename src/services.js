@@ -17,12 +17,10 @@ function getCookie(cname) {
 }
 
 function storeUserCookie(user) {
-
   document.cookie = "mongotodo_user=" + JSON.stringify(user)
 }
 
 function removeUserCookie() {
-
   document.cookie = "mongotodo_user="
 }
 
@@ -45,10 +43,7 @@ export async function createAccount(userInfo) {
   storeUserCookie(user)
 }
 
-
-
 export async function login(credentials) {
-
   const response = await fetch(BACKEND + '/api/utilisateurs/login', {
     method: 'POST',
     headers: {
@@ -67,13 +62,14 @@ export async function logout() {
   removeUserCookie()
 }
 
-export async function isLogged() {
+export function isLogged() {
   return getCookie("mongotodo_user") !== ""
 }
 // we can use cookies, however it should return the whole user object
-export async function getCurrentUser() {
+export function getCurrentUser() {
   try {
-    return JSON.parse(getCookie("mongotodo_user"))
+    let x = JSON.parse(getCookie("mongotodo_user"))
+    return x
   } catch (error) {
     return null
   }
@@ -90,6 +86,9 @@ export async function deleteTask(task) {
 }
 
 export async function createTask(task) {
+  console.log("here is the task (called me man)");
+  console.log(task);
+
   const response = await fetch(BACKEND + '/api/taches/addTache', {
     method: 'POST',
     headers: {
@@ -120,7 +119,7 @@ export async function modifyTask(task) {
 }
 
 export async function getAllTasks() {
-  const response = await fetch(BACKEND + '/api/taches');
+  const response = await fetch(BACKEND + '/api/taches/?uid=' + getCurrentUser()._id);
   if (!response.ok) {
     throw new Error('la recuperation de toutes les tasks est echouée');
   }
@@ -129,16 +128,26 @@ export async function getAllTasks() {
 }
 
 export async function getAllTasksByKeyWord(kw) {
-  const response = await fetch(BACKEND + `/api/taches/search/${kw}`);
+  const response = await fetch(BACKEND + `/api/taches/search/${kw}/?uid=${getCurrentUser()._id}`);
   if (!response.ok) {
-    throw new Error('la recuperation de toutes les tasks par mot clé est echouée');
+    // throw new Error('la recuperation de toutes les tasks par mot clé est echouée');
   }
+  
   const tasks = await response.json();
+  console.log(tasks);
   return tasks;
 }
 // stats
 
 export async function getStats() {
   //must return an obj of the following type
-  return { total: 6, todo: 1, doing: 2, done: 3 }
+  const response = await fetch(BACKEND + '/api/taches/stats/?uid='+ getCurrentUser()?._id);
+  if (!response.ok) {
+    throw new Error('la recuperation a echouée');
+    console.log('la recuperation a echouée');
+  }
+
+  const tasks = await response.json();
+  return tasks;
+  // return { total: 6, todo: 1, doing: 2, done: 3 }
 }
